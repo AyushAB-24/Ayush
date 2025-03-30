@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Attendance Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #4361ee;
@@ -17,10 +17,10 @@
             --dark: #212529;
             --gray: #6c757d;
             --white: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            --border-radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --card-bg: #ffffff;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+            --transition: all 0.2s ease;
         }
 
         * {
@@ -32,10 +32,10 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: #f5f7fa;
             color: var(--dark);
             min-height: 100vh;
-            padding: 20px 10px;
+            padding: 16px;
             line-height: 1.5;
             overflow-x: hidden;
         }
@@ -43,13 +43,11 @@
         .container {
             max-width: 100%;
             margin: 0 auto;
-            padding: 0 10px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 25px;
-            padding: 0 10px;
+            margin-bottom: 24px;
         }
 
         h1 {
@@ -58,44 +56,26 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 8px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
             color: var(--gray);
-            font-size: 0.95rem;
-            max-width: 100%;
-            margin: 0 auto;
+            font-size: 1rem;
         }
 
-        .subjects-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
+        .subjects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
         }
 
         .subject-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 18px;
+            padding: 16px;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .subject-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
         }
 
         .subject-header {
@@ -110,20 +90,6 @@
             font-size: 1.2rem;
             font-weight: 600;
             color: var(--secondary);
-            position: relative;
-            padding-left: 10px;
-        }
-
-        .subject-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--primary);
         }
 
         .attendance-percentage {
@@ -132,83 +98,76 @@
             margin: 12px 0;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .good-attendance { color: var(--success); }
         .warning-attendance { color: var(--warning); }
         .bad-attendance { color: var(--danger); }
 
-        .attendance-stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
-            font-size: 0.9rem;
-        }
-
-        .stat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.03);
-            padding: 6px 10px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-        }
-
-        .stat-badge {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .present-badge { background: var(--success); }
-        .absent-badge { background: var(--danger); }
-        .total-badge { background: var(--primary); }
-
         .progress-container {
-            height: 8px;
+            height: 10px;
             background: #e9ecef;
-            border-radius: 4px;
-            margin: 15px 0;
+            border-radius: 5px;
+            margin: 12px 0;
             overflow: hidden;
-            position: relative;
         }
 
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--primary-light), var(--primary));
-            border-radius: 4px;
+            border-radius: 5px;
             transition: width 0.6s ease;
         }
+
+        .attendance-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .present-stat { color: var(--success); }
+        .absent-stat { color: var(--danger); }
+        .total-stat { color: var(--primary); }
 
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 16px;
         }
 
         button {
             border: none;
-            border-radius: 8px;
-            padding: 12px 10px;
+            border-radius: 12px;
+            padding: 14px;
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            min-height: 44px; /* Minimum touch target size */
+            gap: 8px;
+            min-height: 48px;
         }
 
         button i {
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .btn-present {
@@ -241,31 +200,30 @@
             transform: scale(0.98);
         }
 
-        .overlay {
-            display: none;
+        /* Modal Styles */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.5);
+            display: none;
             z-index: 100;
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(4px);
         }
 
-        .calendar-modal {
-            display: none;
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--card-bg);
+            right: 0;
+            bottom: 0;
+            background: white;
             z-index: 101;
             overflow-y: auto;
-            padding: 20px 15px;
-            transform: none;
-            border-radius: 0;
+            display: none;
+            padding: 16px;
         }
 
         .modal-header {
@@ -273,13 +231,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
-            background: var(--card-bg);
+            background: white;
             z-index: 1;
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
         .modal-title {
@@ -287,9 +245,6 @@
             font-size: 1.4rem;
             font-weight: 600;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .close-btn {
@@ -298,25 +253,17 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
         }
 
-        .year-calendar {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
+        /* Calendar Styles */
         .month-calendar {
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 12px;
-            border-radius: 10px;
+            margin-bottom: 24px;
         }
 
         .month-title {
@@ -324,16 +271,13 @@
             margin-bottom: 12px;
             color: var(--secondary);
             font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .days-header {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             margin-bottom: 8px;
             color: var(--gray);
             text-align: center;
@@ -342,20 +286,18 @@
         .days-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 6px;
         }
 
         .day-cell {
-            width: 36px;
-            height: 36px;
-            line-height: 36px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
             text-align: center;
             border-radius: 50%;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: var(--transition);
-            background: transparent;
-            border: 1px solid transparent;
             margin: 0 auto;
         }
 
@@ -379,227 +321,167 @@
             border: 2px solid var(--primary);
         }
 
-        .status-indicator {
-            font-weight: 600;
-            margin: 15px 0;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 0.95rem;
-        }
-
-        .present-status { 
-            background: rgba(76, 201, 240, 0.1);
-            color: var(--success);
-            border-left: 3px solid var(--success);
-        }
-
-        .absent-status { 
-            background: rgba(247, 37, 133, 0.1);
-            color: var(--danger);
-            border-left: 3px solid var(--danger);
-        }
-
-        .attendance-records {
-            margin-top: 25px;
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 15px;
-            margin-bottom: 20px;
+        /* Records List */
+        .records-list {
+            margin-top: 24px;
         }
 
         .records-title {
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-        }
-
-        .records-list {
-            max-height: 200px;
-            overflow-y: auto;
+            font-size: 1.1rem;
         }
 
         .record-item {
-            padding: 8px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
         }
 
         .record-date {
             color: var(--gray);
-            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .record-status {
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 0.85rem;
+            font-weight: 500;
         }
 
         .record-status-present {
-            color: var(--success);
-            font-weight: 500;
             background: rgba(76, 201, 240, 0.1);
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            color: var(--success);
         }
 
         .record-status-absent {
-            color: var(--danger);
-            font-weight: 500;
             background: rgba(247, 37, 133, 0.1);
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            color: var(--danger);
         }
 
-        /* Edit Modal */
-        .edit-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--card-bg);
-            z-index: 101;
-            overflow-y: auto;
-            padding: 20px;
-            transform: none;
-            border-radius: 0;
+        /* Current Date Indicator */
+        .current-date {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: inline-block;
         }
 
-        .edit-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.3rem;
+        /* Status Indicator */
+        .status-indicator {
             font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 20px;
+            margin: 16px 0;
+            padding: 12px;
+            border-radius: 8px;
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-size: 1rem;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .present-status {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
         }
 
-        .form-input {
+        .absent-status {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        /* Edit Modal Specific */
+        .edit-input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            margin-bottom: 20px;
         }
 
         .modal-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 25px;
             position: sticky;
-            bottom: 20px;
-            background: var(--card-bg);
-            padding-top: 15px;
+            bottom: 0;
+            background: white;
+            padding: 16px 0;
         }
 
-        .btn-save {
-            background: var(--success);
-            color: white;
-            padding: 12px;
-            font-size: 0.95rem;
-        }
-
-        .btn-cancel {
-            background: var(--danger);
-            color: white;
-            padding: 12px;
-            font-size: 0.95rem;
-        }
-
-        /* Current date indicator */
-        .current-date {
-            background: var(--primary);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        /* Floating action button */
-        .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
+        /* Swipeable Tabs for Calendar */
+        .tabs {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-weight: 500;
             cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             z-index: 99;
-            transition: var(--transition);
         }
 
-        .fab:active {
-            transform: scale(0.95);
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.8rem;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
         }
 
-        .subject-card {
-            animation: fadeIn 0.4s ease forwards;
-            opacity: 0;
+        .nav-item.active {
+            color: var(--primary);
         }
 
-        .subject-card:nth-child(1) { animation-delay: 0.1s; }
-        .subject-card:nth-child(2) { animation-delay: 0.2s; }
-        .subject-card:nth-child(3) { animation-delay: 0.3s; }
-        .subject-card:nth-child(4) { animation-delay: 0.4s; }
-        .subject-card:nth-child(5) { animation-delay: 0.5s; }
-        .subject-card:nth-child(6) { animation-delay: 0.6s; }
-        .subject-card:nth-child(7) { animation-delay: 0.7s; }
-        .subject-card:nth-child(8) { animation-delay: 0.8s; }
-        .subject-card:nth-child(9) { animation-delay: 0.9s; }
-
-        /* Mobile-specific optimizations */
+        /* Responsive Adjustments */
         @media (min-width: 768px) {
             .container {
-                max-width: 750px;
-                padding: 0 20px;
-            }
-            
-            .subjects-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
+                max-width: 600px;
             }
             
             .action-buttons {
@@ -611,23 +493,14 @@
             }
         }
 
-        @media (min-width: 992px) {
-            .container {
-                max-width: 1200px;
-            }
-            
-            .subjects-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Prevent zooming on input focus */
-        @media screen and (-webkit-min-device-pixel-ratio:0) {
-            select,
-            textarea,
-            input {
-                font-size: 16px;
-            }
+        .subject-card {
+            animation: fadeIn 0.3s ease forwards;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -636,51 +509,60 @@
     <div class="container">
         <header>
             <h1>Attendance Tracker</h1>
-            <p class="subtitle">Track your college attendance on the go</p>
+            <p class="subtitle">Track your classes easily</p>
         </header>
         
-        <div class="subjects-grid" id="subjects"></div>
+        <div class="subjects-list" id="subjects"></div>
     </div>
     
-    <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
-    
     <!-- Calendar Modal -->
-    <div class="calendar-modal" id="calendar-modal">
+    <div class="modal-overlay" id="calendar-overlay"></div>
+    <div class="modal" id="calendar-modal">
         <div class="modal-header">
-            <h2 class="modal-title">
-                <i class="fas fa-calendar-alt"></i>
-                <span id="calendar-title">Subject Attendance</span>
-            </h2>
-            <button class="close-btn" onclick="closeAllModals()">&times;</button>
+            <h2 class="modal-title" id="calendar-title">Attendance</h2>
+            <button class="close-btn" onclick="closeModal('calendar')">&times;</button>
         </div>
         <div id="calendar-content"></div>
     </div>
     
     <!-- Edit Modal -->
-    <div class="edit-modal" id="edit-modal">
-        <h2 class="edit-title">
-            <i class="fas fa-edit"></i>
-            Rename Subject
-        </h2>
-        <div class="form-group">
-            <input type="text" class="form-input" id="edit-subject-input" placeholder="Enter new subject name">
+    <div class="modal-overlay" id="edit-overlay"></div>
+    <div class="modal" id="edit-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Rename Subject</h2>
+            <button class="close-btn" onclick="closeModal('edit')">&times;</button>
         </div>
+        <input type="text" class="edit-input" id="edit-subject-input" placeholder="Subject name">
         <div class="modal-actions">
             <button class="btn-save" onclick="saveSubjectName()">
                 <i class="fas fa-check"></i> Save
             </button>
-            <button class="btn-cancel" onclick="closeAllModals()">
+            <button class="btn-cancel" onclick="closeModal('edit')">
                 <i class="fas fa-times"></i> Cancel
             </button>
         </div>
     </div>
     
-    <!-- Floating Action Button -->
-    <div class="fab" onclick="showMotivation()">
-        <i class="fas fa-magic"></i>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-chart-pie"></i>
+            <span>Stats</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
     </div>
-    
+
     <script>
         // Initialize data
         let subjects = ["Theory 1", "Theory 2", "Theory 3", "Theory 4", "Theory 5", "Theory 6", "Lab 1", "Lab 2", "Lab 3"];
@@ -702,7 +584,6 @@
             
             if (savedAttendance) {
                 attendance = JSON.parse(savedAttendance);
-                // Fix any missing subjects
                 subjects.forEach(subject => {
                     if (!attendance[subject]) {
                         attendance[subject] = { attended: 0, total: 0 };
@@ -716,7 +597,6 @@
             
             if (savedCalendar) {
                 calendar = JSON.parse(savedCalendar);
-                // Fix any missing subjects
                 subjects.forEach(subject => {
                     if (!calendar[subject]) {
                         calendar[subject] = {};
@@ -730,7 +610,6 @@
             
             if (savedRecords) {
                 attendanceRecords = JSON.parse(savedRecords);
-                // Fix any missing subjects
                 subjects.forEach(subject => {
                     if (!attendanceRecords[subject]) {
                         attendanceRecords[subject] = [];
@@ -776,51 +655,69 @@
                 content.appendChild(statusDisplay);
             }
             
-            // Generate calendar for 2025
-            let yearDiv = document.createElement('div');
-            yearDiv.className = 'year-calendar';
+            // Create tabs for months
+            const tabs = document.createElement('div');
+            tabs.className = 'tabs';
             
-            for (let month = 0; month < 12; month++) {
-                let monthDiv = document.createElement('div');
-                monthDiv.className = 'month-calendar';
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const tabContents = document.createElement('div');
+            tabContents.style.marginBottom = '60px'; // Space for bottom nav
+            
+            months.forEach((month, index) => {
+                // Create tab
+                const tab = document.createElement('div');
+                tab.className = 'tab';
+                if (index === new Date().getMonth()) tab.classList.add('active');
+                tab.textContent = month;
+                tab.onclick = () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`month-${index}`).classList.add('active');
+                };
+                tabs.appendChild(tab);
                 
-                let monthTitle = document.createElement('div');
+                // Create month content
+                const monthContent = document.createElement('div');
+                monthContent.className = 'tab-content';
+                monthContent.id = `month-${index}`;
+                if (index === new Date().getMonth()) monthContent.classList.add('active');
+                
+                // Month title
+                const monthTitle = document.createElement('div');
                 monthTitle.className = 'month-title';
-                monthTitle.innerHTML = `
-                    <i class="fas fa-calendar"></i>
-                    ${new Date(2025, month, 1).toLocaleString('default', { month: 'long' })}
-                `;
-                monthDiv.appendChild(monthTitle);
+                monthTitle.textContent = `${month} 2025`;
+                monthContent.appendChild(monthTitle);
                 
                 // Days header
-                let daysHeader = document.createElement('div');
+                const daysHeader = document.createElement('div');
                 daysHeader.className = 'days-header';
                 ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(day => {
-                    let dayHeader = document.createElement('div');
+                    const dayHeader = document.createElement('div');
                     dayHeader.textContent = day;
                     daysHeader.appendChild(dayHeader);
                 });
-                monthDiv.appendChild(daysHeader);
+                monthContent.appendChild(daysHeader);
                 
                 // Days grid
-                let daysGrid = document.createElement('div');
+                const daysGrid = document.createElement('div');
                 daysGrid.className = 'days-grid';
                 
-                let firstDay = new Date(2025, month, 1);
-                let daysInMonth = new Date(2025, month + 1, 0).getDate();
+                const firstDay = new Date(2025, index, 1);
+                const daysInMonth = new Date(2025, index + 1, 0).getDate();
                 
                 // Empty cells for days before the 1st
                 for (let i = 0; i < firstDay.getDay(); i++) {
-                    let empty = document.createElement('div');
+                    const empty = document.createElement('div');
                     empty.className = 'day-cell empty';
                     daysGrid.appendChild(empty);
                 }
                 
                 // Days of the month
                 for (let day = 1; day <= daysInMonth; day++) {
-                    let date = new Date(2025, month, day);
-                    let dateStr = formatDate(date);
-                    let dayCell = document.createElement('div');
+                    const date = new Date(2025, index, day);
+                    const dateStr = formatDate(date);
+                    const dayCell = document.createElement('div');
                     dayCell.className = 'day-cell';
                     dayCell.textContent = day;
                     
@@ -844,17 +741,18 @@
                     daysGrid.appendChild(dayCell);
                 }
                 
-                monthDiv.appendChild(daysGrid);
-                yearDiv.appendChild(monthDiv);
-            }
+                monthContent.appendChild(daysGrid);
+                tabContents.appendChild(monthContent);
+            });
             
-            content.appendChild(yearDiv);
+            content.appendChild(tabs);
+            content.appendChild(tabContents);
             
             // Add attendance records
-            let recordsDiv = document.createElement('div');
-            recordsDiv.className = 'attendance-records';
+            const recordsDiv = document.createElement('div');
+            recordsDiv.className = 'records-list';
             
-            let recordsTitle = document.createElement('div');
+            const recordsTitle = document.createElement('div');
             recordsTitle.className = 'records-title';
             recordsTitle.innerHTML = `
                 <i class="fas fa-history"></i>
@@ -862,22 +760,20 @@
             `;
             recordsDiv.appendChild(recordsTitle);
             
-            let recordsList = document.createElement('div');
-            recordsList.className = 'records-list';
+            const recordsList = document.createElement('div');
             
             // Sort records by date (newest first)
-            let sortedRecords = [...attendanceRecords[subject]].sort((a, b) => new Date(b.date) - new Date(a.date));
+            const sortedRecords = [...attendanceRecords[subject]].sort((a, b) => new Date(b.date) - new Date(a.date));
             
             if (sortedRecords.length === 0) {
-                recordsList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 15px 0;">No attendance records yet</p>';
+                recordsList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 20px 0;">No records yet</p>';
             } else {
                 sortedRecords.forEach(record => {
-                    let recordItem = document.createElement('div');
+                    const recordItem = document.createElement('div');
                     recordItem.className = 'record-item';
                     recordItem.innerHTML = `
                         <span class="record-date">${record.date}</span>
-                        <span class="record-status-${record.status}">
-                            <i class="fas ${record.status === 'present' ? 'fa-check' : 'fa-times'}"></i>
+                        <span class="record-status record-status-${record.status}">
                             ${record.status.charAt(0).toUpperCase() + record.status.slice(1)}
                         </span>
                     `;
@@ -894,21 +790,27 @@
         }
         
         function markAttendance(subject, status) {
-            openCalendar(subject, status);
+            openModal('calendar', subject, status);
         }
         
-        function openCalendar(subject, status = null) {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('calendar-modal').style.display = 'block';
-            document.getElementById('calendar-title').textContent = `${subject} Attendance`;
+        function openModal(modal, subject, status = null) {
+            document.getElementById(`${modal}-overlay`).style.display = 'block';
+            document.getElementById(`${modal}-modal`).style.display = 'block';
             
-            if (status) {
-                document.getElementById('calendar-modal').setAttribute('data-status', status);
-            } else {
-                document.getElementById('calendar-modal').removeAttribute('data-status');
+            if (modal === 'calendar') {
+                document.getElementById('calendar-title').textContent = subject;
+                if (status) {
+                    document.getElementById('calendar-modal').setAttribute('data-status', status);
+                } else {
+                    document.getElementById('calendar-modal').removeAttribute('data-status');
+                }
+                generateCalendar(subject);
             }
-            
-            generateCalendar(subject);
+        }
+        
+        function closeModal(modal) {
+            document.getElementById(`${modal}-overlay`).style.display = 'none';
+            document.getElementById(`${modal}-modal`).style.display = 'none';
         }
         
         function markDate(subject, date, status) {
@@ -952,27 +854,20 @@
             
             // If we were marking a specific status, close the calendar
             if (document.getElementById('calendar-modal').getAttribute('data-status')) {
-                closeAllModals();
+                closeModal('calendar');
             } else {
                 // Otherwise just refresh the calendar view
                 generateCalendar(subject);
             }
         }
         
-        function closeAllModals() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('calendar-modal').style.display = 'none';
-            document.getElementById('edit-modal').style.display = 'none';
-            document.getElementById('calendar-modal').removeAttribute('data-status');
-        }
-        
         function updateDisplay() {
             let display = '';
             subjects.forEach((subject, index) => {
-                let total = attendance[subject].total;
-                let attended = attendance[subject].attended;
-                let absent = total - attended;
-                let percent = total > 0 ? (attended / total * 100).toFixed(1) : 0;
+                const total = attendance[subject].total;
+                const attended = attendance[subject].attended;
+                const absent = total - attended;
+                const percent = total > 0 ? (attended / total * 100).toFixed(1) : 0;
                 let needed = 0;
                 
                 // Calculate how many more classes needed for 75%
@@ -980,12 +875,11 @@
                     needed++;
                 }
                 
-                let percentageClass = 'good-attendance';
-                if (percent < 75) percentageClass = 'warning-attendance';
-                if (percent < 50) percentageClass = 'bad-attendance';
+                const percentageClass = percent >= 75 ? 'good-attendance' : 
+                                       percent >= 50 ? 'warning-attendance' : 'bad-attendance';
                 
                 display += `
-                    <div class="subject-card" style="animation-delay: ${index * 0.1}s">
+                    <div class="subject-card">
                         <div class="subject-header">
                             <h3 class="subject-title">${subject}</h3>
                             <button class="btn-edit" onclick="editSubject('${subject}')">
@@ -1004,23 +898,23 @@
                         
                         <div class="attendance-stats">
                             <div class="stat">
-                                <div class="stat-badge present-badge"></div>
-                                <span>Present: ${attended}</span>
+                                <span>Present</span>
+                                <span class="stat-value present-stat">${attended}</span>
                             </div>
                             <div class="stat">
-                                <div class="stat-badge absent-badge"></div>
-                                <span>Absent: ${absent}</span>
+                                <span>Absent</span>
+                                <span class="stat-value absent-stat">${absent}</span>
                             </div>
                             <div class="stat">
-                                <div class="stat-badge total-badge"></div>
-                                <span>Total: ${total}</span>
+                                <span>Total</span>
+                                <span class="stat-value total-stat">${total}</span>
                             </div>
                         </div>
                         
                         ${percent < 75 && total > 0 ? `
-                            <div class="warning-attendance" style="font-size: 0.85rem; margin: 12px 0;">
+                            <div class="warning-attendance">
                                 <i class="fas fa-exclamation-circle"></i>
-                                Attend ${needed} more ${needed === 1 ? 'class' : 'classes'} to reach 75%
+                                Need ${needed} more ${needed === 1 ? 'class' : 'classes'} for 75%
                             </div>
                         ` : ''}
                         
@@ -1031,7 +925,7 @@
                             <button class="btn-absent" onclick="markAttendance('${subject}', 'absent')">
                                 <i class="fas fa-times"></i> Absent
                             </button>
-                            <button class="btn-calendar" onclick="openCalendar('${subject}')">
+                            <button class="btn-calendar" onclick="openModal('calendar', '${subject}')">
                                 <i class="fas fa-calendar-alt"></i> Calendar
                             </button>
                             <button class="btn-undo" onclick="undoAttendance('${subject}')">
@@ -1073,8 +967,7 @@
         function editSubject(subject) {
             currentEditingSubject = subject;
             document.getElementById('edit-subject-input').value = subject;
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('edit-modal').style.display = 'block';
+            openModal('edit');
             document.getElementById('edit-subject-input').focus();
         }
         
@@ -1111,32 +1004,21 @@
                     updateDisplay();
                 }
             }
-            closeAllModals();
-        }
-        
-        function showMotivation() {
-            const messages = [
-                "You're doing great! Keep attending classes!",
-                "Every class counts - you've got this!",
-                "Your future self will thank you for good attendance!",
-                "Stay consistent and the results will follow!",
-                "Education is the passport to the future!",
-                "One day at a time - you're building your future!"
-            ];
-            
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            
-            alert(randomMessage); // Using simple alert for mobile
+            closeModal('edit');
         }
         
         // Initialize the app
         loadData();
         updateDisplay();
         
-        // Prevent zooming on mobile
-        document.addEventListener('touchmove', function(event) {
-            if (event.scale !== 1) { event.preventDefault(); }
-        }, { passive: false });
+        // Bottom nav functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                // Add functionality for other tabs here
+            });
+        });
     </script>
 </body>
 </html>
