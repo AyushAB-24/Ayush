@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Attendance Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -35,39 +37,44 @@
             background: #f5f7fa;
             color: var(--dark);
             min-height: 100vh;
-            padding: 16px;
+            padding: 0;
             line-height: 1.5;
             overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
+        /* App Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        h1 {
+        .app-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 8px;
+            text-align: center;
         }
 
-        .subtitle {
-            color: var(--gray);
-            font-size: 1rem;
+        /* Main Content */
+        .app-content {
+            padding: 16px;
+            padding-bottom: 80px; /* Space for floating button */
         }
 
+        /* Subject Cards */
         .subjects-list {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-top: 16px;
         }
 
         .subject-card {
@@ -224,6 +231,7 @@
             overflow-y: auto;
             display: none;
             padding: 16px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-header {
@@ -299,6 +307,7 @@
             cursor: pointer;
             transition: var(--transition);
             margin: 0 auto;
+            touch-action: manipulation;
         }
 
         .day-cell.empty {
@@ -422,15 +431,22 @@
             display: flex;
             border-bottom: 1px solid #eee;
             margin-bottom: 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
         }
 
         .tab {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
+            flex: 0 0 auto;
+            padding: 12px 16px;
             font-weight: 500;
             cursor: pointer;
             border-bottom: 3px solid transparent;
+            white-space: nowrap;
         }
 
         .tab.active {
@@ -446,42 +462,52 @@
             display: block;
         }
 
-        /* Bottom Navigation */
-        .bottom-nav {
+        /* Floating Action Button */
+        .fab {
             position: fixed;
-            bottom: 0;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        /* Pull to refresh indicator */
+        .refresh-indicator {
+            position: fixed;
+            top: -50px;
             left: 0;
             right: 0;
-            background: white;
+            height: 50px;
             display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 99;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            color: var(--gray);
-            text-decoration: none;
-            font-size: 0.8rem;
-        }
-
-        .nav-item i {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            transition: transform 0.3s ease;
+            z-index: 1000;
         }
 
         /* Responsive Adjustments */
         @media (min-width: 768px) {
-            .container {
+            .app-content {
                 max-width: 600px;
+                margin: 0 auto;
             }
             
             .action-buttons {
@@ -506,15 +532,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Attendance Tracker</h1>
-            <p class="subtitle">Track your classes easily</p>
-        </header>
-        
+    <!-- App Header -->
+    <div class="app-header">
+        <h1 class="app-title">Attendance Tracker</h1>
+    </div>
+
+    <!-- Main Content -->
+    <div class="app-content" id="app-content">
         <div class="subjects-list" id="subjects"></div>
     </div>
-    
+
     <!-- Calendar Modal -->
     <div class="modal-overlay" id="calendar-overlay"></div>
     <div class="modal" id="calendar-modal">
@@ -543,24 +570,9 @@
         </div>
     </div>
     
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </div>
-        <div class="nav-item">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Calendar</span>
-        </div>
-        <div class="nav-item">
-            <i class="fas fa-chart-pie"></i>
-            <span>Stats</span>
-        </div>
-        <div class="nav-item">
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
-        </div>
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="showMotivation()">
+        <i class="fas fa-lightbulb"></i>
     </div>
 
     <script>
@@ -570,6 +582,8 @@
         let calendar = {};
         let attendanceRecords = {};
         let currentEditingSubject = null;
+        let startY = 0;
+        let isRefreshing = false;
         
         // Load from localStorage if available
         function loadData() {
@@ -1007,17 +1021,44 @@
             closeModal('edit');
         }
         
+        function showMotivation() {
+            const messages = [
+                "You're doing great! Keep attending classes!",
+                "Every class counts - you've got this!",
+                "Your future self will thank you for good attendance!",
+                "Stay consistent and the results will follow!",
+                "Education is the passport to the future!",
+                "One day at a time - you're building your future!"
+            ];
+            
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            alert(randomMessage);
+        }
+        
         // Initialize the app
         loadData();
         updateDisplay();
         
-        // Bottom nav functionality
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-                // Add functionality for other tabs here
-            });
+        // Add touch event for pull-to-refresh
+        const content = document.getElementById('app-content');
+        
+        content.addEventListener('touchstart', e => {
+            if (content.scrollTop === 0) {
+                startY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+        
+        content.addEventListener('touchmove', e => {
+            const y = e.touches[0].clientY;
+            if (content.scrollTop === 0 && y > startY && !isRefreshing) {
+                e.preventDefault();
+                // Implement pull-to-refresh here if needed
+            }
+        }, { passive: false });
+        
+        // Prevent zooming
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
         });
     </script>
 </body>
