@@ -6,24 +6,25 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Attendance Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4361ee;
-            --primary-light: #4895ef;
-            --secondary: #3f37c9;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --warning: #f8961e;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --white: #ffffff;
-            --card-bg: #ffffff;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            --border-radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --scrollbar-width: 8px;
+            --primary: #6750A4;
+            --primary-light: #7E67CC;
+            --secondary: #625B71;
+            --success: #0A7E22;
+            --danger: #BA1A1A;
+            --warning: #E6A100;
+            --light: #F3EDF7;
+            --dark: #1C1B1F;
+            --gray: #5D5D5D;
+            --white: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --surface: #F3EDF7;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            --border-radius: 12px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --scrollbar-width: 4px;
         }
 
         * {
@@ -34,8 +35,8 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #f5f7fa;
+            font-family: 'Roboto', sans-serif;
+            background: var(--surface);
             color: var(--dark);
             min-height: 100vh;
             padding: 0;
@@ -60,38 +61,31 @@
             border-radius: var(--scrollbar-width);
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
         /* App Header */
         .app-header {
             position: sticky;
             top: 0;
-            background: white;
+            background: var(--primary);
             padding: 16px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             z-index: 10;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(5px);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .app-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 500;
         }
 
         /* Main Content */
         .app-content {
             padding: 16px;
-            padding-bottom: 80px;
+            padding-bottom: 16px;
             overflow-y: auto;
-            height: calc(100vh - 60px);
+            height: calc(100vh - 56px);
             scroll-behavior: smooth;
         }
 
@@ -108,13 +102,6 @@
             padding: 16px;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            transform: translateY(0);
-            will-change: transform;
-        }
-
-        .subject-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
         }
 
         .subject-header {
@@ -125,15 +112,14 @@
         }
 
         .subject-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
         }
 
         .attendance-percentage {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 0.875rem;
+            font-weight: 500;
             margin: 12px 0;
             display: flex;
             align-items: center;
@@ -145,17 +131,17 @@
         .bad-attendance { color: var(--danger); }
 
         .progress-container {
-            height: 10px;
+            height: 8px;
             background: #e9ecef;
-            border-radius: 5px;
+            border-radius: 4px;
             margin: 12px 0;
             overflow: hidden;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary-light), var(--primary));
-            border-radius: 5px;
+            background: var(--primary);
+            border-radius: 4px;
             transition: width 0.6s ease;
         }
 
@@ -163,7 +149,7 @@
             display: flex;
             justify-content: space-between;
             margin: 16px 0;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
 
         .stat {
@@ -174,7 +160,7 @@
         }
 
         .stat-value {
-            font-weight: 600;
+            font-weight: 500;
             margin-top: 4px;
         }
 
@@ -185,24 +171,26 @@
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             margin-top: 16px;
         }
 
         button {
             border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-family: 'Poppins', sans-serif;
+            border-radius: 20px;
+            padding: 10px 16px;
+            font-family: 'Roboto', sans-serif;
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 48px;
+            min-height: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         button i {
@@ -237,6 +225,7 @@
 
         button:active {
             transform: scale(0.98);
+            opacity: 0.9;
         }
 
         /* Modal Styles */
@@ -249,7 +238,6 @@
             background: rgba(0, 0, 0, 0.5);
             display: none;
             z-index: 100;
-            backdrop-filter: blur(4px);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -260,45 +248,40 @@
 
         .modal {
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
-            bottom: 0;
             background: white;
             z-index: 101;
             overflow-y: auto;
             display: none;
-            padding: 16px;
+            border-radius: 16px 16px 0 0;
+            max-height: 80vh;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
             -webkit-overflow-scrolling: touch;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.3s ease;
         }
 
         .modal.active {
             transform: translateY(0);
-            opacity: 1;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
+            padding: 16px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             background: white;
             z-index: 1;
-            padding-top: 8px;
         }
 
         .modal-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--dark);
         }
 
         .close-btn {
@@ -313,30 +296,26 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .close-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
         }
 
         /* Calendar Styles */
         .month-calendar {
             margin-bottom: 24px;
+            padding: 0 16px;
         }
 
         .month-title {
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 12px;
-            color: var(--secondary);
-            font-size: 1.1rem;
+            color: var(--dark);
+            font-size: 1rem;
         }
 
         .days-header {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             margin-bottom: 8px;
             color: var(--gray);
             text-align: center;
@@ -345,16 +324,16 @@
         .days-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
+            gap: 4px;
         }
 
         .day-cell {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
             text-align: center;
-            border-radius: 50%;
-            font-size: 0.9rem;
+            border-radius: 18px;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: var(--transition);
             margin: 0 auto;
@@ -368,13 +347,11 @@
         .present-day { 
             background: var(--success);
             color: white;
-            font-weight: 500;
         }
 
         .absent-day { 
             background: var(--danger);
             color: white;
-            font-weight: 500;
         }
 
         .current-day {
@@ -384,13 +361,14 @@
         /* Records List */
         .records-list {
             margin-top: 24px;
+            padding: 0 16px;
         }
 
         .records-title {
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 16px;
-            color: var(--secondary);
-            font-size: 1.1rem;
+            color: var(--dark);
+            font-size: 1rem;
         }
 
         .record-item {
@@ -399,32 +377,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: var(--transition);
-        }
-
-        .record-item:active {
-            background: rgba(0, 0, 0, 0.02);
         }
 
         .record-date {
             color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 0.875rem;
         }
 
         .record-status {
             padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 500;
         }
 
         .record-status-present {
-            background: rgba(76, 201, 240, 0.1);
+            background: rgba(10, 126, 34, 0.1);
             color: var(--success);
         }
 
         .record-status-absent {
-            background: rgba(247, 37, 133, 0.1);
+            background: rgba(186, 26, 26, 0.1);
             color: var(--danger);
         }
 
@@ -433,30 +406,30 @@
             background: var(--primary);
             color: white;
             padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-bottom: 16px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin: 16px;
             display: inline-block;
         }
 
         /* Status Indicator */
         .status-indicator {
-            font-weight: 600;
-            margin: 16px 0;
+            font-weight: 500;
+            margin: 16px;
             padding: 12px;
             border-radius: 8px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.875rem;
         }
 
         .present-status {
-            background: rgba(76, 201, 240, 0.1);
+            background: rgba(10, 126, 34, 0.1);
             color: var(--success);
             border-left: 4px solid var(--success);
         }
 
         .absent-status {
-            background: rgba(247, 37, 133, 0.1);
+            background: rgba(186, 26, 26, 0.1);
             color: var(--danger);
             border-left: 4px solid var(--danger);
         }
@@ -464,29 +437,23 @@
         /* Edit Modal Specific */
         .edit-input {
             width: 100%;
-            padding: 14px;
+            padding: 12px 16px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
             font-size: 1rem;
-            margin-bottom: 20px;
-            transition: var(--transition);
-        }
-
-        .edit-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            margin: 16px;
         }
 
         .modal-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
             position: sticky;
             bottom: 0;
             background: white;
-            padding: 16px 0;
+            padding: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         /* Swipeable Tabs for Calendar */
@@ -497,6 +464,7 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            padding: 0 16px;
         }
 
         .tabs::-webkit-scrollbar {
@@ -508,13 +476,13 @@
             padding: 12px 16px;
             font-weight: 500;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
+            border-bottom: 2px solid transparent;
             white-space: nowrap;
-            transition: var(--transition);
+            font-size: 0.875rem;
         }
 
         .tab.active {
-            border-bottom: 3px solid var(--primary);
+            border-bottom: 2px solid var(--primary);
             color: var(--primary);
         }
 
@@ -526,35 +494,6 @@
             display: block;
         }
 
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-            cursor: pointer;
-            z-index: 99;
-            transition: var(--transition);
-            touch-action: manipulation;
-        }
-
-        .fab:hover {
-            transform: scale(1.05);
-        }
-
-        .fab:active {
-            transform: scale(0.95);
-        }
-
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -562,15 +501,14 @@
         }
 
         .subject-card {
-            animation: fadeIn 0.4s ease forwards;
+            animation: fadeIn 0.3s ease forwards;
         }
 
         /* Responsive Adjustments */
-        @media (min-width: 768px) {
+        @media (min-width: 600px) {
             .app-content {
                 max-width: 600px;
                 margin: 0 auto;
-                padding-bottom: 100px;
             }
             
             .action-buttons {
@@ -583,23 +521,16 @@
             
             .modal {
                 left: 50%;
-                top: 50%;
-                right: auto;
                 bottom: auto;
-                width: 90%;
-                max-width: 500px;
+                top: 50%;
+                transform: translate(-50%, 20px);
+                max-width: 400px;
+                border-radius: 16px;
                 max-height: 80vh;
-                transform: translate(-50%, -20px);
-                border-radius: var(--border-radius);
-                overflow: hidden;
             }
             
             .modal.active {
                 transform: translate(-50%, -50%);
-            }
-            
-            .modal-header {
-                position: static;
             }
         }
     </style>
@@ -635,18 +566,13 @@
         </div>
         <input type="text" class="edit-input" id="edit-subject-input" placeholder="Subject name">
         <div class="modal-actions">
-            <button class="btn-save" onclick="saveSubjectName()">
-                <i class="fas fa-check"></i> Save
-            </button>
             <button class="btn-cancel" onclick="closeModal('edit')">
-                <i class="fas fa-times"></i> Cancel
+                Cancel
+            </button>
+            <button class="btn-save" onclick="saveSubjectName()">
+                Save
             </button>
         </div>
-    </div>
-    
-    <!-- Floating Action Button -->
-    <div class="fab" onclick="showMotivation()">
-        <i class="fas fa-lightbulb"></i>
     </div>
 
     <script>
@@ -656,8 +582,6 @@
         let calendar = {};
         let attendanceRecords = {};
         let currentEditingSubject = null;
-        let startY = 0;
-        let isRefreshing = false;
         
         // Load from localStorage if available
         function loadData() {
@@ -749,7 +673,6 @@
             
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const tabContents = document.createElement('div');
-            tabContents.style.marginBottom = '60px'; // Space for bottom nav
             
             months.forEach((month, index) => {
                 // Create tab
@@ -1112,78 +1035,9 @@
             closeModal('edit');
         }
         
-        function showMotivation() {
-            const messages = [
-                "You're doing great! Keep attending classes!",
-                "Every class counts - you've got this!",
-                "Your future self will thank you for good attendance!",
-                "Stay consistent and the results will follow!",
-                "Education is the passport to the future!",
-                "One day at a time - you're building your future!"
-            ];
-            
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            
-            // Create a toast notification
-            const toast = document.createElement('div');
-            toast.style.position = 'fixed';
-            toast.style.bottom = '100px';
-            toast.style.right = '20px';
-            toast.style.backgroundColor = 'var(--primary)';
-            toast.style.color = 'white';
-            toast.style.padding = '12px 20px';
-            toast.style.borderRadius = '8px';
-            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-            toast.style.zIndex = '1000';
-            toast.style.maxWidth = '300px';
-            toast.style.transform = 'translateY(20px)';
-            toast.style.opacity = '0';
-            toast.style.transition = 'all 0.3s ease';
-            toast.textContent = randomMessage;
-            
-            document.body.appendChild(toast);
-            
-            // Show toast
-            setTimeout(() => {
-                toast.style.transform = 'translateY(0)';
-                toast.style.opacity = '1';
-            }, 10);
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                toast.style.transform = 'translateY(20px)';
-                toast.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 300);
-            }, 3000);
-        }
-        
         // Initialize the app
         loadData();
         updateDisplay();
-        
-        // Add touch event for pull-to-refresh
-        const content = document.getElementById('app-content');
-        
-        content.addEventListener('touchstart', e => {
-            if (content.scrollTop === 0) {
-                startY = e.touches[0].clientY;
-            }
-        }, { passive: true });
-        
-        content.addEventListener('touchmove', e => {
-            const y = e.touches[0].clientY;
-            if (content.scrollTop === 0 && y > startY && !isRefreshing) {
-                e.preventDefault();
-                // Implement pull-to-refresh here if needed
-            }
-        }, { passive: false });
-        
-        // Prevent zooming
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
         
         // Handle keyboard for edit modal
         document.getElementById('edit-subject-input').addEventListener('keypress', function(e) {
