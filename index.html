@@ -24,7 +24,7 @@
             --shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             --border-radius: 12px;
             --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --scrollbar-width: 4px;
+            --scrollbar-width: 6px;
         }
 
         * {
@@ -43,9 +43,10 @@
             line-height: 1.5;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
         }
 
-        /* Custom Scrollbar */
+        /* Enhanced Custom Scrollbar for Mobile */
         ::-webkit-scrollbar {
             width: var(--scrollbar-width);
             height: var(--scrollbar-width);
@@ -61,7 +62,11 @@
             border-radius: var(--scrollbar-width);
         }
 
-        /* App Header */
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* App Header - Sticky and Mobile-optimized */
         .app-header {
             position: sticky;
             top: 0;
@@ -80,20 +85,41 @@
             font-weight: 500;
         }
 
-        /* Main Content */
+        .settings-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .settings-btn:active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content - Better scrolling for mobile */
         .app-content {
             padding: 16px;
-            padding-bottom: 16px;
+            padding-bottom: 80px; /* Extra space for bottom buttons */
             overflow-y: auto;
             height: calc(100vh - 56px);
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Subject Cards */
+        /* Subject Cards - More touch-friendly */
         .subjects-list {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            padding-bottom: 16px; /* Extra space at bottom */
         }
 
         .subject-card {
@@ -102,6 +128,7 @@
             padding: 16px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            touch-action: manipulation;
         }
 
         .subject-header {
@@ -157,28 +184,31 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            min-width: 60px; /* Better touch target */
         }
 
         .stat-value {
             font-weight: 500;
             margin-top: 4px;
+            font-size: 1rem; /* Slightly larger for mobile */
         }
 
         .present-stat { color: var(--success); }
         .absent-stat { color: var(--danger); }
         .total-stat { color: var(--primary); }
 
+        /* Action Buttons - Larger and more spaced for mobile */
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
             margin-top: 16px;
         }
 
         button {
             border: none;
             border-radius: 20px;
-            padding: 10px 16px;
+            padding: 12px 16px; /* Increased padding for better touch */
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
             font-size: 0.875rem;
@@ -188,9 +218,10 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 40px;
+            min-height: 44px; /* Minimum touch target size */
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            touch-action: manipulation;
         }
 
         button i {
@@ -223,12 +254,22 @@
             grid-column: span 2;
         }
 
+        .btn-add {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
         button:active {
             transform: scale(0.98);
             opacity: 0.9;
         }
 
-        /* Modal Styles */
+        /* Modal Styles - Better mobile interaction */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -240,6 +281,7 @@
             z-index: 100;
             opacity: 0;
             transition: opacity 0.3s ease;
+            touch-action: manipulation;
         }
 
         .modal-overlay.active {
@@ -256,10 +298,11 @@
             overflow-y: auto;
             display: none;
             border-radius: 16px 16px 0 0;
-            max-height: 80vh;
+            max-height: 85vh; /* Slightly taller for mobile */
             transform: translateY(100%);
             transition: transform 0.3s ease;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain; /* Prevent scroll chaining */
         }
 
         .modal.active {
@@ -290,15 +333,16 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
-            width: 40px;
-            height: 40px;
+            width: 44px; /* Larger touch target */
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            touch-action: manipulation;
         }
 
-        /* Calendar Styles */
+        /* Calendar Styles - More touch-friendly */
         .month-calendar {
             margin-bottom: 24px;
             padding: 0 16px;
@@ -328,11 +372,11 @@
         }
 
         .day-cell {
-            width: 36px;
-            height: 36px;
-            line-height: 36px;
+            width: 40px; /* Slightly larger for touch */
+            height: 40px;
+            line-height: 40px;
             text-align: center;
-            border-radius: 18px;
+            border-radius: 20px;
             font-size: 0.875rem;
             cursor: pointer;
             transition: var(--transition);
@@ -358,10 +402,13 @@
             border: 2px solid var(--primary);
         }
 
-        /* Records List */
+        /* Records List - Better scrolling */
         .records-list {
             margin-top: 24px;
             padding: 0 16px;
+            max-height: 30vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .records-title {
@@ -405,7 +452,7 @@
         .current-date {
             background: var(--primary);
             color: white;
-            padding: 6px 12px;
+            padding: 8px 12px; /* Slightly larger padding */
             border-radius: 12px;
             font-size: 0.75rem;
             margin: 16px;
@@ -436,13 +483,14 @@
 
         /* Edit Modal Specific */
         .edit-input {
-            width: 100%;
-            padding: 12px 16px;
+            width: calc(100% - 32px);
+            padding: 14px 16px; /* More padding for touch */
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
             font-family: 'Roboto', sans-serif;
             font-size: 1rem;
             margin: 16px;
+            touch-action: manipulation;
         }
 
         .modal-actions {
@@ -456,7 +504,7 @@
             border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        /* Swipeable Tabs for Calendar */
+        /* Swipeable Tabs for Calendar - Better mobile experience */
         .tabs {
             display: flex;
             border-bottom: 1px solid #eee;
@@ -465,6 +513,7 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             padding: 0 16px;
+            touch-action: pan-x;
         }
 
         .tabs::-webkit-scrollbar {
@@ -479,6 +528,7 @@
             border-bottom: 2px solid transparent;
             white-space: nowrap;
             font-size: 0.875rem;
+            touch-action: manipulation;
         }
 
         .tab.active {
@@ -494,6 +544,28 @@
             display: block;
         }
 
+        /* Settings Modal */
+        .settings-option {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .settings-option:active {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .settings-option i {
+            font-size: 1.25rem;
+            color: var(--primary);
+            width: 24px;
+            text-align: center;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -502,6 +574,30 @@
 
         .subject-card {
             animation: fadeIn 0.3s ease forwards;
+        }
+
+        /* Bottom floating action button for mobile */
+        .floating-action-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            cursor: pointer;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+
+        .floating-action-btn:active {
+            transform: scale(0.95);
         }
 
         /* Responsive Adjustments */
@@ -532,6 +628,10 @@
             .modal.active {
                 transform: translate(-50%, -50%);
             }
+            
+            .floating-action-btn {
+                display: none;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -540,11 +640,19 @@
     <!-- App Header -->
     <div class="app-header">
         <h1 class="app-title">Attendance Tracker</h1>
+        <button class="settings-btn" onclick="openModal('settings')">
+            <i class="fas fa-cog"></i>
+        </button>
     </div>
 
     <!-- Main Content -->
     <div class="app-content" id="app-content">
         <div class="subjects-list" id="subjects"></div>
+    </div>
+
+    <!-- Floating Action Button (Mobile only) -->
+    <div class="floating-action-btn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
     </div>
 
     <!-- Calendar Modal -->
@@ -572,6 +680,61 @@
             <button class="btn-save" onclick="saveSubjectName()">
                 Save
             </button>
+        </div>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal-overlay" id="add-subject-overlay"></div>
+    <div class="modal" id="add-subject-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Add New Subject</h2>
+            <button class="close-btn" onclick="closeModal('add-subject')">&times;</button>
+        </div>
+        <input type="text" class="edit-input" id="new-subject-input" placeholder="Enter subject name">
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('add-subject')">
+                Cancel
+            </button>
+            <button class="btn-save" onclick="addNewSubject()">
+                Add Subject
+            </button>
+        </div>
+    </div>
+
+    <!-- Delete Subject Modal -->
+    <div class="modal-overlay" id="delete-subject-overlay"></div>
+    <div class="modal" id="delete-subject-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Remove Subject</h2>
+            <button class="close-btn" onclick="closeModal('delete-subject')">&times;</button>
+        </div>
+        <div style="padding: 16px;">
+            <p>Select subject to remove:</p>
+            <div id="subject-list-to-delete" style="margin-top: 12px;"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('delete-subject')">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-overlay"></div>
+    <div class="modal" id="settings-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Settings</h2>
+            <button class="close-btn" onclick="closeModal('settings')">&times;</button>
+        </div>
+        <div>
+            <div class="settings-option" onclick="openModalFromSettings('add-subject')">
+                <i class="fas fa-plus"></i>
+                <span>Add New Subject</span>
+            </div>
+            <div class="settings-option" onclick="openModalFromSettings('delete-subject')">
+                <i class="fas fa-trash"></i>
+                <span>Remove Subject</span>
+            </div>
         </div>
     </div>
 
@@ -825,7 +988,28 @@
                     document.getElementById('calendar-modal').removeAttribute('data-status');
                 }
                 generateCalendar(subject);
+            } else if (modal === 'delete-subject') {
+                // Populate the delete subject modal with subject list
+                const subjectListDiv = document.getElementById('subject-list-to-delete');
+                subjectListDiv.innerHTML = '';
+                
+                subjects.forEach(subject => {
+                    const subjectBtn = document.createElement('button');
+                    subjectBtn.className = 'btn-delete';
+                    subjectBtn.style.width = '100%';
+                    subjectBtn.style.marginBottom = '8px';
+                    subjectBtn.textContent = subject;
+                    subjectBtn.onclick = () => removeSubject(subject);
+                    subjectListDiv.appendChild(subjectBtn);
+                });
             }
+        }
+        
+        function openModalFromSettings(modal) {
+            closeModal('settings');
+            setTimeout(() => {
+                openModal(modal);
+            }, 300);
         }
         
         function closeModal(modal) {
@@ -839,6 +1023,11 @@
                 overlay.style.display = 'none';
                 modalElement.style.display = 'none';
             }, 300);
+            
+            // Clear input fields when closing add subject modal
+            if (modal === 'add-subject') {
+                document.getElementById('new-subject-input').value = '';
+            }
         }
         
         function markDate(subject, date, status) {
@@ -1035,6 +1224,71 @@
             closeModal('edit');
         }
         
+        // Add new subject function
+        function addNewSubject() {
+            const subjectName = document.getElementById('new-subject-input').value.trim();
+            if (subjectName && !subjects.includes(subjectName)) {
+                subjects.push(subjectName);
+                attendance[subjectName] = { attended: 0, total: 0 };
+                calendar[subjectName] = {};
+                attendanceRecords[subjectName] = [];
+                
+                saveData();
+                updateDisplay();
+                closeModal('add-subject');
+            } else if (subjects.includes(subjectName)) {
+                alert('This subject already exists!');
+            }
+        }
+        
+        // Remove subject function
+        function removeSubject(subject) {
+            if (confirm(`Are you sure you want to remove "${subject}" and all its attendance data?`)) {
+                // Remove from subjects array
+                const index = subjects.indexOf(subject);
+                if (index !== -1) {
+                    subjects.splice(index, 1);
+                }
+                
+                // Remove from attendance data
+                if (attendance[subject]) {
+                    delete attendance[subject];
+                }
+                
+                // Remove from calendar data
+                if (calendar[subject]) {
+                    delete calendar[subject];
+                }
+                
+                // Remove from records
+                if (attendanceRecords[subject]) {
+                    delete attendanceRecords[subject];
+                }
+                
+                saveData();
+                updateDisplay();
+                closeModal('delete-subject');
+            }
+        }
+        
+        // Scroll to top function
+        function scrollToTop() {
+            document.getElementById('app-content').scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide floating action button based on scroll position
+        function handleScroll() {
+            const fab = document.querySelector('.floating-action-btn');
+            if (document.getElementById('app-content').scrollTop > 300) {
+                fab.style.display = 'flex';
+            } else {
+                fab.style.display = 'none';
+            }
+        }
+        
         // Initialize the app
         loadData();
         updateDisplay();
@@ -1045,6 +1299,16 @@
                 saveSubjectName();
             }
         });
+        
+        // Handle keyboard for add subject modal
+        document.getElementById('new-subject-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addNewSubject();
+            }
+        });
+        
+        // Add scroll event listener
+        document.getElementById('app-content').addEventListener('scroll', handleScroll);
     </script>
 </body>
 </html>
