@@ -357,11 +357,10 @@
             touch-action: manipulation;
         }
 
-        /* Calendar Styles - Enhanced for Smooth Scrolling */
+        /* Enhanced Calendar Styles */
         .calendar-container {
             padding: 0 16px;
             margin-bottom: 16px;
-            overflow: hidden;
         }
 
         .calendar-viewport {
@@ -372,6 +371,7 @@
             scroll-behavior: smooth;
             scrollbar-width: none;
             touch-action: pan-x;
+            position: relative;
         }
 
         .calendar-viewport::-webkit-scrollbar {
@@ -381,12 +381,14 @@
         .calendar-months {
             display: flex;
             width: max-content;
+            transition: transform 0.3s ease;
         }
 
         .calendar-month {
             min-width: 100%;
             scroll-snap-align: start;
             padding-bottom: 8px;
+            flex-shrink: 0;
         }
 
         .month-title {
@@ -702,6 +704,28 @@
                 margin: 0 16px;
             }
         }
+
+        /* Calendar indicators */
+        .calendar-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .calendar-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-indicator.active {
+            background: var(--primary);
+            width: 16px;
+            border-radius: 4px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -954,7 +978,7 @@
             const calendarMonths = document.createElement('div');
             calendarMonths.className = 'calendar-months';
             
-            // Generate months to show
+            // Generate months to show (previous, current, next)
             for (let i = -1; i <= 1; i++) {
                 const monthToShow = new Date(currentYear, currentMonth + i, 1);
                 const monthElement = createMonthElement(monthToShow, subject);
@@ -965,11 +989,25 @@
             calendarContainer.appendChild(calendarViewport);
             content.appendChild(calendarContainer);
             
+            // Add calendar indicators
+            const indicators = document.createElement('div');
+            indicators.className = 'calendar-indicators';
+            for (let i = 0; i < 3; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'calendar-indicator';
+                if (i === 1) indicator.classList.add('active');
+                indicators.appendChild(indicator);
+            }
+            content.appendChild(indicators);
+            
             // Center the current month
             setTimeout(() => {
                 const viewport = document.getElementById('calendar-viewport');
                 viewport.scrollLeft = viewport.offsetWidth;
             }, 10);
+            
+            // Setup scroll event listener for indicators
+            setupCalendarScrollListener();
             
             // Add attendance records
             const recordsDiv = document.createElement('div');
@@ -1085,16 +1123,52 @@
             return monthElement;
         }
         
+        function setupCalendarScrollListener() {
+            const viewport = document.getElementById('calendar-viewport');
+            const indicators = document.querySelectorAll('.calendar-indicator');
+            
+            viewport.addEventListener('scroll', () => {
+                const scrollPosition = viewport.scrollLeft;
+                const viewportWidth = viewport.offsetWidth;
+                const activeIndicator = Math.round(scrollPosition / viewportWidth);
+                
+                indicators.forEach((indicator, index) => {
+                    if (index === activeIndicator) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }, { passive: true });
+        }
+        
         function scrollCalendar(direction) {
-            currentMonth += direction;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            generateCalendar(currentCalendarSubject);
+            const viewport = document.getElementById('calendar-viewport');
+            const scrollAmount = viewport.offsetWidth * direction;
+            
+            viewport.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+            
+            // Update current month after scroll completes
+            setTimeout(() => {
+                const scrollPosition = viewport.scrollLeft;
+                const viewportWidth = viewport.offsetWidth;
+                const activeMonth = Math.round(scrollPosition / viewportWidth) - 1; // -1 because we have prev month first
+                
+                if (activeMonth !== 0) {
+                    currentMonth += activeMonth;
+                    if (currentMonth < 0) {
+                        currentMonth = 11;
+                        currentYear--;
+                    } else if (currentMonth > 11) {
+                        currentMonth = 0;
+                        currentYear++;
+                    }
+                    generateCalendar(currentCalendarSubject);
+                }
+            }, 300);
         }
         
         function setupSwipeNavigation() {
