@@ -1,0 +1,742 @@
+:root {
+    --primary: #6750A4;
+    --primary-light: #7E67CC;
+    --primary-dark: #4F378B;
+    --secondary: #625B71;
+    --success: #0A7E22;
+    --success-light: #E6F4EA;
+    --danger: #BA1A1A;
+    --danger-light: #FCE8E8;
+    --warning: #E6A100;
+    --warning-light: #FFF8E6;
+    --light: #F3EDF7;
+    --dark: #1C1B1F;
+    --gray: #5D5D5D;
+    --gray-light: #EEEEEE;
+    --white: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --surface: #F3EDF7;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --ripple-duration: 600ms;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--surface);
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 0;
+    line-height: 1.5;
+    overflow-x: hidden;
+    touch-action: manipulation;
+}
+
+/* Material-like ripple effect */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: scale(0);
+    animation: ripple var(--ripple-duration) linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* App Header - Sticky and optimized for Android */
+.app-header {
+    position: sticky;
+    top: 0;
+    background: var(--primary);
+    padding: 12px 16px;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: var(--shadow);
+}
+
+.app-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    touch-action: manipulation;
+}
+
+.settings-btn:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Main Content - Optimized for Android scrolling */
+.app-content {
+    padding: 16px;
+    padding-bottom: 80px;
+    overflow-y: auto;
+    height: calc(100vh - 56px);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Subject Cards - Material Design cards with better touch feedback */
+.subjects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 16px;
+}
+
+.subject-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    transition: var(--transition-slow);
+    touch-action: manipulation;
+    will-change: transform;
+}
+
+.subject-card:active {
+    transform: scale(0.98);
+}
+
+.subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.subject-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.attendance-percentage {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.good-attendance { color: var(--success); }
+.warning-attendance { color: var(--warning); }
+.bad-attendance { color: var(--danger); }
+
+.progress-container {
+    height: 8px;
+    background: var(--gray-light);
+    border-radius: 4px;
+    margin: 12px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+.attendance-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0;
+    font-size: 0.75rem;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 60px;
+}
+
+.stat-value {
+    font-weight: 500;
+    margin-top: 4px;
+    font-size: 1rem;
+}
+
+.present-stat { color: var(--success); }
+.absent-stat { color: var(--danger); }
+.total-stat { color: var(--primary); }
+
+/* Action Buttons - Material Design buttons */
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+button {
+    border: none;
+    border-radius: 20px;
+    padding: 12px 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    will-change: transform;
+}
+
+button:active {
+    transform: scale(0.96);
+    box-shadow: var(--shadow-md);
+}
+
+button i {
+    font-size: 1rem;
+}
+
+.btn-present {
+    background: var(--success);
+    color: white;
+}
+
+.btn-absent {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-calendar {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-undo {
+    background: var(--warning);
+    color: white;
+}
+
+.btn-edit {
+    background: var(--secondary);
+    color: white;
+    grid-column: span 2;
+}
+
+.btn-add {
+    background: var(--primary-light);
+    color: white;
+}
+
+.btn-delete {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-cancel {
+    background: var(--gray-light);
+    color: var(--dark);
+}
+
+.btn-save {
+    background: var(--primary);
+    color: white;
+}
+
+/* Modal Styles - Bottom sheet for Android */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    touch-action: manipulation;
+    will-change: opacity;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+}
+
+.modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1001;
+    overflow-y: auto;
+    display: none;
+    border-radius: 16px 16px 0 0;
+    max-height: 90vh;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    box-shadow: var(--shadow-lg);
+    will-change: transform;
+}
+
+.modal.active {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--gray);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    touch-action: manipulation;
+}
+
+.close-btn:active {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Calendar Styles - Optimized for touch */
+.month-calendar {
+    margin-bottom: 24px;
+    padding: 0 16px;
+}
+
+.month-title {
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--dark);
+    font-size: 1rem;
+}
+
+.days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: 500;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+    color: var(--gray);
+    text-align: center;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.day-cell {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin: 0 auto;
+    touch-action: manipulation;
+    position: relative;
+    user-select: none;
+}
+
+.day-cell.empty {
+    visibility: hidden;
+}
+
+.day-cell.today {
+    background: var(--primary-light);
+    color: white;
+    font-weight: 500;
+}
+
+.day-cell.today::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: white;
+}
+
+.present-day { 
+    background: var(--success);
+    color: white;
+    font-weight: 500;
+}
+
+.absent-day { 
+    background: var(--danger);
+    color: white;
+    font-weight: 500;
+}
+
+.day-cell:active {
+    transform: scale(0.9);
+}
+
+/* Records List */
+.records-list {
+    margin-top: 24px;
+    padding: 0 16px;
+    max-height: 30vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.records-title {
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--dark);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.record-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.record-date {
+    color: var(--gray);
+    font-size: 0.875rem;
+}
+
+.record-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.record-status-present {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.record-status-absent {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+/* Current Date Indicator */
+.current-date {
+    background: var(--primary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    margin: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Status Indicator */
+.status-indicator {
+    font-weight: 500;
+    margin: 16px;
+    padding: 12px;
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.present-status {
+    background: var(--success-light);
+    color: var(--success);
+    border-left: 4px solid var(--success);
+}
+
+.absent-status {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-left: 4px solid var(--danger);
+}
+
+/* Edit Modal Specific */
+.edit-input {
+    width: calc(100% - 32px);
+    padding: 14px 16px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius-sm);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    margin: 16px;
+    touch-action: manipulation;
+    transition: var(--transition);
+}
+
+.edit-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Calendar Navigation */
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+.calendar-nav-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--primary);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.calendar-nav-btn:active {
+    background: rgba(103, 80, 164, 0.1);
+}
+
+.today-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.today-btn:active {
+    opacity: 0.9;
+}
+
+/* Settings Modal */
+.settings-option {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    touch-action: manipulation;
+}
+
+.settings-option:active {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.settings-option i {
+    font-size: 1.25rem;
+    color: var(--primary);
+    width: 24px;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.subject-card {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Bottom floating action button */
+.floating-action-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+    z-index: 50;
+    cursor: pointer;
+    transition: var(--transition-slow);
+    touch-action: manipulation;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.floating-action-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.floating-action-btn:active {
+    transform: scale(0.95) translateY(0);
+    box-shadow: var(--shadow-md);
+}
+
+/* Snackbar for notifications */
+.snackbar {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-lg);
+    z-index: 1002;
+    transition: var(--transition-slow);
+    max-width: 90%;
+    text-align: center;
+}
+
+.snackbar.show {
+    bottom: 24px;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 600px) {
+    .app-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .action-buttons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .btn-edit {
+        grid-column: span 1;
+    }
+    
+    .modal {
+        left: 50%;
+        bottom: auto;
+        top: 50%;
+        transform: translate(-50%, 20px);
+        max-width: 400px;
+        border-radius: 16px;
+        max-height: 80vh;
+    }
+    
+    .modal.active {
+        transform: translate(-50%, -50%);
+    }
+    
+    .floating-action-btn {
+        display: none;
+    }
+}
