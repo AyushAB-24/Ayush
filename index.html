@@ -11,20 +11,29 @@
         :root {
             --primary: #6750A4;
             --primary-light: #7E67CC;
+            --primary-dark: #4F378B;
             --secondary: #625B71;
             --success: #0A7E22;
+            --success-light: #E6F4EA;
             --danger: #BA1A1A;
+            --danger-light: #FCE8E8;
             --warning: #E6A100;
+            --warning-light: #FFF8E6;
             --light: #F3EDF7;
             --dark: #1C1B1F;
             --gray: #5D5D5D;
+            --gray-light: #EEEEEE;
             --white: #FFFFFF;
             --card-bg: #FFFFFF;
             --surface: #F3EDF7;
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
             --border-radius: 12px;
+            --border-radius-sm: 8px;
             --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --scrollbar-width: 6px;
+            --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --ripple-duration: 600ms;
         }
 
         * {
@@ -32,6 +41,7 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
@@ -42,47 +52,49 @@
             padding: 0;
             line-height: 1.5;
             overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
             touch-action: manipulation;
         }
 
-        /* Enhanced Custom Scrollbar for Mobile */
-        ::-webkit-scrollbar {
-            width: var(--scrollbar-width);
-            height: var(--scrollbar-width);
+        /* Material-like ripple effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: var(--scrollbar-width);
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.7);
+            transform: scale(0);
+            animation: ripple var(--ripple-duration) linear;
+            pointer-events: none;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--scrollbar-width);
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        /* App Header - Sticky and Mobile-optimized */
+        /* App Header - Sticky and optimized for Android */
         .app-header {
             position: sticky;
             top: 0;
             background: var(--primary);
-            padding: 16px;
-            z-index: 10;
+            padding: 12px 16px;
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
         }
 
         .app-title {
             font-size: 1.25rem;
             font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
         .settings-btn {
@@ -98,28 +110,30 @@
             border-radius: 50%;
             cursor: pointer;
             transition: var(--transition);
+            touch-action: manipulation;
         }
 
         .settings-btn:active {
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Main Content - Better scrolling for mobile */
+        /* Main Content - Optimized for Android scrolling */
         .app-content {
             padding: 16px;
-            padding-bottom: 80px; /* Extra space for bottom buttons */
+            padding-bottom: 80px;
             overflow-y: auto;
             height: calc(100vh - 56px);
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
 
-        /* Subject Cards - More touch-friendly */
+        /* Subject Cards - Material Design cards with better touch feedback */
         .subjects-list {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            padding-bottom: 16px; /* Extra space at bottom */
+            padding-bottom: 16px;
         }
 
         .subject-card {
@@ -127,8 +141,13 @@
             border-radius: var(--border-radius);
             padding: 16px;
             box-shadow: var(--shadow);
-            transition: var(--transition);
+            transition: var(--transition-slow);
             touch-action: manipulation;
+            will-change: transform;
+        }
+
+        .subject-card:active {
+            transform: scale(0.98);
         }
 
         .subject-header {
@@ -159,7 +178,7 @@
 
         .progress-container {
             height: 8px;
-            background: #e9ecef;
+            background: var(--gray-light);
             border-radius: 4px;
             margin: 12px 0;
             overflow: hidden;
@@ -184,20 +203,20 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            min-width: 60px; /* Better touch target */
+            min-width: 60px;
         }
 
         .stat-value {
             font-weight: 500;
             margin-top: 4px;
-            font-size: 1rem; /* Slightly larger for mobile */
+            font-size: 1rem;
         }
 
         .present-stat { color: var(--success); }
         .absent-stat { color: var(--danger); }
         .total-stat { color: var(--primary); }
 
-        /* Action Buttons - Larger and more spaced for mobile */
+        /* Action Buttons - Material Design buttons */
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -208,7 +227,7 @@
         button {
             border: none;
             border-radius: 20px;
-            padding: 12px 16px; /* Increased padding for better touch */
+            padding: 12px 16px;
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
             font-size: 0.875rem;
@@ -218,10 +237,19 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 44px; /* Minimum touch target size */
+            min-height: 44px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            will-change: transform;
+        }
+
+        button:active {
+            transform: scale(0.96);
+            box-shadow: var(--shadow-md);
         }
 
         button i {
@@ -264,12 +292,17 @@
             color: white;
         }
 
-        button:active {
-            transform: scale(0.98);
-            opacity: 0.9;
+        .btn-cancel {
+            background: var(--gray-light);
+            color: var(--dark);
         }
 
-        /* Modal Styles - Better mobile interaction */
+        .btn-save {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Modal Styles - Bottom sheet for Android */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -278,10 +311,11 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             display: none;
-            z-index: 100;
+            z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
             touch-action: manipulation;
+            will-change: opacity;
         }
 
         .modal-overlay.active {
@@ -294,15 +328,17 @@
             left: 0;
             right: 0;
             background: white;
-            z-index: 101;
+            z-index: 1001;
             overflow-y: auto;
             display: none;
             border-radius: 16px 16px 0 0;
-            max-height: 85vh; /* Slightly taller for mobile */
+            max-height: 90vh;
             transform: translateY(100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain; /* Prevent scroll chaining */
+            overscroll-behavior: contain;
+            box-shadow: var(--shadow-lg);
+            will-change: transform;
         }
 
         .modal.active {
@@ -333,7 +369,7 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
-            width: 44px; /* Larger touch target */
+            width: 44px;
             height: 44px;
             display: flex;
             align-items: center;
@@ -342,7 +378,11 @@
             touch-action: manipulation;
         }
 
-        /* Calendar Styles - More touch-friendly */
+        .close-btn:active {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Calendar Styles - Optimized for touch */
         .month-calendar {
             margin-bottom: 24px;
             padding: 0 16px;
@@ -372,7 +412,7 @@
         }
 
         .day-cell {
-            width: 40px; /* Slightly larger for touch */
+            width: 40px;
             height: 40px;
             line-height: 40px;
             text-align: center;
@@ -383,6 +423,7 @@
             margin: 0 auto;
             touch-action: manipulation;
             position: relative;
+            user-select: none;
         }
 
         .day-cell.empty {
@@ -392,6 +433,7 @@
         .day-cell.today {
             background: var(--primary-light);
             color: white;
+            font-weight: 500;
         }
 
         .day-cell.today::after {
@@ -409,18 +451,20 @@
         .present-day { 
             background: var(--success);
             color: white;
+            font-weight: 500;
         }
 
         .absent-day { 
             background: var(--danger);
             color: white;
+            font-weight: 500;
         }
 
         .day-cell:active {
             transform: scale(0.9);
         }
 
-        /* Records List - Better scrolling */
+        /* Records List */
         .records-list {
             margin-top: 24px;
             padding: 0 16px;
@@ -434,6 +478,9 @@
             margin-bottom: 16px;
             color: var(--dark);
             font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .record-item {
@@ -457,12 +504,12 @@
         }
 
         .record-status-present {
-            background: rgba(10, 126, 34, 0.1);
+            background: var(--success-light);
             color: var(--success);
         }
 
         .record-status-absent {
-            background: rgba(186, 26, 26, 0.1);
+            background: var(--danger-light);
             color: var(--danger);
         }
 
@@ -470,11 +517,13 @@
         .current-date {
             background: var(--primary);
             color: white;
-            padding: 8px 12px; /* Slightly larger padding */
-            border-radius: 12px;
+            padding: 8px 12px;
+            border-radius: var(--border-radius-sm);
             font-size: 0.75rem;
             margin: 16px;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Status Indicator */
@@ -482,19 +531,23 @@
             font-weight: 500;
             margin: 16px;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: var(--border-radius-sm);
             text-align: center;
             font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .present-status {
-            background: rgba(10, 126, 34, 0.1);
+            background: var(--success-light);
             color: var(--success);
             border-left: 4px solid var(--success);
         }
 
         .absent-status {
-            background: rgba(186, 26, 26, 0.1);
+            background: var(--danger-light);
             color: var(--danger);
             border-left: 4px solid var(--danger);
         }
@@ -502,13 +555,20 @@
         /* Edit Modal Specific */
         .edit-input {
             width: calc(100% - 32px);
-            padding: 14px 16px; /* More padding for touch */
+            padding: 14px 16px;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: var(--border-radius-sm);
             font-family: 'Roboto', sans-serif;
             font-size: 1rem;
             margin: 16px;
             touch-action: manipulation;
+            transition: var(--transition);
+        }
+
+        .edit-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.2);
         }
 
         .modal-actions {
@@ -520,46 +580,6 @@
             background: white;
             padding: 16px;
             border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        /* Swipeable Tabs for Calendar - Better mobile experience */
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 16px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            padding: 0 16px;
-            touch-action: pan-x;
-        }
-
-        .tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tab {
-            flex: 0 0 auto;
-            padding: 12px 16px;
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
-            font-size: 0.875rem;
-            touch-action: manipulation;
-        }
-
-        .tab.active {
-            border-bottom: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
         }
 
         /* Calendar Navigation */
@@ -583,6 +603,7 @@
             justify-content: center;
             border-radius: 50%;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .calendar-nav-btn:active {
@@ -598,6 +619,7 @@
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .today-btn:active {
@@ -613,6 +635,7 @@
             gap: 12px;
             cursor: pointer;
             transition: var(--transition);
+            touch-action: manipulation;
         }
 
         .settings-option:active {
@@ -632,15 +655,20 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         .subject-card {
             animation: fadeIn 0.3s ease forwards;
         }
 
-        /* Bottom floating action button for mobile */
+        /* Bottom floating action button */
         .floating-action-btn {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 24px;
+            right: 24px;
             width: 56px;
             height: 56px;
             border-radius: 50%;
@@ -649,15 +677,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 5;
+            box-shadow: var(--shadow-lg);
+            z-index: 50;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-slow);
             touch-action: manipulation;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .floating-action-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .floating-action-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.95) translateY(0);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Snackbar for notifications */
+        .snackbar {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-lg);
+            z-index: 1002;
+            transition: var(--transition-slow);
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .snackbar.show {
+            bottom: 24px;
         }
 
         /* Responsive Adjustments */
@@ -700,7 +757,7 @@
     <!-- App Header -->
     <div class="app-header">
         <h1 class="app-title">Attendance Tracker</h1>
-        <button class="settings-btn" onclick="openModal('settings')">
+        <button class="settings-btn ripple" onclick="openModal('settings')">
             <i class="fas fa-cog"></i>
         </button>
     </div>
@@ -711,16 +768,19 @@
     </div>
 
     <!-- Floating Action Button (Mobile only) -->
-    <div class="floating-action-btn" onclick="scrollToTop()">
+    <div class="floating-action-btn ripple" id="fab" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </div>
+
+    <!-- Snackbar for notifications -->
+    <div class="snackbar" id="snackbar"></div>
 
     <!-- Calendar Modal -->
     <div class="modal-overlay" id="calendar-overlay"></div>
     <div class="modal" id="calendar-modal">
         <div class="modal-header">
             <h2 class="modal-title" id="calendar-title">Attendance</h2>
-            <button class="close-btn" onclick="closeModal('calendar')">&times;</button>
+            <button class="close-btn ripple" onclick="closeModal('calendar')">&times;</button>
         </div>
         <div id="calendar-content"></div>
     </div>
@@ -730,14 +790,14 @@
     <div class="modal" id="edit-modal">
         <div class="modal-header">
             <h2 class="modal-title">Rename Subject</h2>
-            <button class="close-btn" onclick="closeModal('edit')">&times;</button>
+            <button class="close-btn ripple" onclick="closeModal('edit')">&times;</button>
         </div>
         <input type="text" class="edit-input" id="edit-subject-input" placeholder="Subject name">
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="closeModal('edit')">
+            <button class="btn-cancel ripple" onclick="closeModal('edit')">
                 Cancel
             </button>
-            <button class="btn-save" onclick="saveSubjectName()">
+            <button class="btn-save ripple" onclick="saveSubjectName()">
                 Save
             </button>
         </div>
@@ -748,14 +808,14 @@
     <div class="modal" id="add-subject-modal">
         <div class="modal-header">
             <h2 class="modal-title">Add New Subject</h2>
-            <button class="close-btn" onclick="closeModal('add-subject')">&times;</button>
+            <button class="close-btn ripple" onclick="closeModal('add-subject')">&times;</button>
         </div>
         <input type="text" class="edit-input" id="new-subject-input" placeholder="Enter subject name">
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="closeModal('add-subject')">
+            <button class="btn-cancel ripple" onclick="closeModal('add-subject')">
                 Cancel
             </button>
-            <button class="btn-save" onclick="addNewSubject()">
+            <button class="btn-save ripple" onclick="addNewSubject()">
                 Add Subject
             </button>
         </div>
@@ -766,14 +826,14 @@
     <div class="modal" id="delete-subject-modal">
         <div class="modal-header">
             <h2 class="modal-title">Remove Subject</h2>
-            <button class="close-btn" onclick="closeModal('delete-subject')">&times;</button>
+            <button class="close-btn ripple" onclick="closeModal('delete-subject')">&times;</button>
         </div>
         <div style="padding: 16px;">
             <p>Select subject to remove:</p>
             <div id="subject-list-to-delete" style="margin-top: 12px;"></div>
         </div>
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="closeModal('delete-subject')">
+            <button class="btn-cancel ripple" onclick="closeModal('delete-subject')">
                 Cancel
             </button>
         </div>
@@ -784,14 +844,14 @@
     <div class="modal" id="settings-modal">
         <div class="modal-header">
             <h2 class="modal-title">Settings</h2>
-            <button class="close-btn" onclick="closeModal('settings')">&times;</button>
+            <button class="close-btn ripple" onclick="closeModal('settings')">&times;</button>
         </div>
         <div>
-            <div class="settings-option" onclick="openModalFromSettings('add-subject')">
+            <div class="settings-option ripple" onclick="openModalFromSettings('add-subject')">
                 <i class="fas fa-plus"></i>
                 <span>Add New Subject</span>
             </div>
-            <div class="settings-option" onclick="openModalFromSettings('delete-subject')">
+            <div class="settings-option ripple" onclick="openModalFromSettings('delete-subject')">
                 <i class="fas fa-trash"></i>
                 <span>Remove Subject</span>
             </div>
@@ -879,7 +939,7 @@
             const todayStr = formatDate(today);
             const currentDateDisplay = document.createElement('div');
             currentDateDisplay.className = 'current-date';
-            currentDateDisplay.textContent = `Today: ${todayStr}`;
+            currentDateDisplay.innerHTML = `<i class="fas fa-calendar-day"></i> Today: ${todayStr}`;
             content.appendChild(currentDateDisplay);
             
             // Add status indicator if marking attendance
@@ -899,7 +959,7 @@
             navControls.className = 'calendar-nav';
             
             const prevBtn = document.createElement('button');
-            prevBtn.className = 'calendar-nav-btn';
+            prevBtn.className = 'calendar-nav-btn ripple';
             prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
             prevBtn.onclick = () => {
                 currentMonth--;
@@ -911,7 +971,7 @@
             };
             
             const nextBtn = document.createElement('button');
-            nextBtn.className = 'calendar-nav-btn';
+            nextBtn.className = 'calendar-nav-btn ripple';
             nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
             nextBtn.onclick = () => {
                 currentMonth++;
@@ -928,7 +988,7 @@
             monthTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
             
             const todayBtn = document.createElement('button');
-            todayBtn.className = 'today-btn';
+            todayBtn.className = 'today-btn ripple';
             todayBtn.textContent = 'Today';
             todayBtn.onclick = () => {
                 const today = new Date();
@@ -943,16 +1003,9 @@
             navControls.appendChild(todayBtn);
             content.appendChild(navControls);
             
-            // Create tabs for months
-            const tabs = document.createElement('div');
-            tabs.className = 'tabs';
-            
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const tabContents = document.createElement('div');
-            
-            // Only show current month in mobile view
+            // Create month calendar
             const monthContent = document.createElement('div');
-            monthContent.className = 'tab-content active';
+            monthContent.className = 'month-calendar';
             
             // Days header
             const daysHeader = document.createElement('div');
@@ -983,7 +1036,7 @@
                 const date = new Date(currentYear, currentMonth, day);
                 const dateStr = formatDate(date);
                 const dayCell = document.createElement('div');
-                dayCell.className = 'day-cell';
+                dayCell.className = 'day-cell ripple';
                 dayCell.textContent = day;
                 
                 // Highlight current day
@@ -1015,9 +1068,7 @@
             }
             
             monthContent.appendChild(daysGrid);
-            tabContents.appendChild(monthContent);
-            
-            content.appendChild(tabContents);
+            content.appendChild(monthContent);
             
             // Add attendance records
             const recordsDiv = document.createElement('div');
@@ -1066,12 +1117,12 @@
             
             calendarContent.addEventListener('touchstart', (e) => {
                 startX = e.changedTouches[0].screenX;
-            }, false);
+            }, { passive: true });
             
             calendarContent.addEventListener('touchend', (e) => {
                 endX = e.changedTouches[0].screenX;
                 handleSwipe();
-            }, false);
+            }, { passive: true });
             
             function handleSwipe() {
                 const threshold = 50; // Minimum swipe distance
@@ -1109,7 +1160,7 @@
             openModal('calendar', subject, status);
         }
         
-        function openModal(modal, subject, status = null) {
+        function openModal(modal, subject = null, status = null) {
             const overlay = document.getElementById(`${modal}-overlay`);
             const modalElement = document.getElementById(`${modal}-modal`);
             
@@ -1137,10 +1188,10 @@
                 
                 subjects.forEach(subject => {
                     const subjectBtn = document.createElement('button');
-                    subjectBtn.className = 'btn-delete';
+                    subjectBtn.className = 'btn-delete ripple';
                     subjectBtn.style.width = '100%';
                     subjectBtn.style.marginBottom = '8px';
-                    subjectBtn.textContent = subject;
+                    subjectBtn.innerHTML = `<i class="fas fa-trash"></i> ${subject}`;
                     subjectBtn.onclick = () => removeSubject(subject);
                     subjectListDiv.appendChild(subjectBtn);
                 });
@@ -1218,9 +1269,14 @@
             updateDisplay();
             saveData();
             
+            // Show confirmation
+            showSnackbar(`Marked as ${status} for ${date}`);
+            
             // If we were marking a specific status, close the calendar
             if (document.getElementById('calendar-modal').getAttribute('data-status')) {
-                closeModal('calendar');
+                setTimeout(() => {
+                    closeModal('calendar');
+                }, 500);
             } else {
                 // Otherwise just refresh the calendar view
                 generateCalendar(subject);
@@ -1248,8 +1304,8 @@
                     <div class="subject-card" style="animation-delay: ${index * 0.05}s">
                         <div class="subject-header">
                             <h3 class="subject-title">${subject}</h3>
-                            <button class="btn-edit" onclick="editSubject('${subject}')">
-                                <i class="fas fa-edit"></i>
+                            <button class="btn-edit ripple" onclick="editSubject('${subject}')">
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                         </div>
                         
@@ -1285,16 +1341,16 @@
                         ` : ''}
                         
                         <div class="action-buttons">
-                            <button class="btn-present" onclick="markAttendance('${subject}', 'present')">
+                            <button class="btn-present ripple" onclick="markAttendance('${subject}', 'present')">
                                 <i class="fas fa-check"></i> Present
                             </button>
-                            <button class="btn-absent" onclick="markAttendance('${subject}', 'absent')">
+                            <button class="btn-absent ripple" onclick="markAttendance('${subject}', 'absent')">
                                 <i class="fas fa-times"></i> Absent
                             </button>
-                            <button class="btn-calendar" onclick="openModal('calendar', '${subject}')">
+                            <button class="btn-calendar ripple" onclick="openModal('calendar', '${subject}')">
                                 <i class="fas fa-calendar-alt"></i> Calendar
                             </button>
-                            <button class="btn-undo" onclick="undoAttendance('${subject}')">
+                            <button class="btn-undo ripple" onclick="undoAttendance('${subject}')">
                                 <i class="fas fa-undo"></i> Undo
                             </button>
                         </div>
@@ -1302,6 +1358,9 @@
                 `;
             });
             document.getElementById('subjects').innerHTML = display;
+            
+            // Add ripple effects to all buttons
+            setupRippleEffects();
         }
         
         function undoAttendance(subject) {
@@ -1327,6 +1386,9 @@
                 
                 updateDisplay();
                 saveData();
+                showSnackbar(`Undid ${lastRecord.status} for ${lastRecord.date}`);
+            } else {
+                showSnackbar('No attendance to undo');
             }
         }
         
@@ -1334,7 +1396,9 @@
             currentEditingSubject = subject;
             document.getElementById('edit-subject-input').value = subject;
             openModal('edit');
-            document.getElementById('edit-subject-input').focus();
+            setTimeout(() => {
+                document.getElementById('edit-subject-input').focus();
+            }, 300);
         }
         
         function saveSubjectName() {
@@ -1368,6 +1432,7 @@
                     
                     saveData();
                     updateDisplay();
+                    showSnackbar('Subject renamed successfully');
                 }
             }
             closeModal('edit');
@@ -1385,8 +1450,9 @@
                 saveData();
                 updateDisplay();
                 closeModal('add-subject');
+                showSnackbar('Subject added successfully');
             } else if (subjects.includes(subjectName)) {
-                alert('This subject already exists!');
+                showSnackbar('This subject already exists!');
             }
         }
         
@@ -1417,6 +1483,7 @@
                 saveData();
                 updateDisplay();
                 closeModal('delete-subject');
+                showSnackbar('Subject removed successfully');
             }
         }
         
@@ -1430,34 +1497,85 @@
         
         // Show/hide floating action button based on scroll position
         function handleScroll() {
-            const fab = document.querySelector('.floating-action-btn');
+            const fab = document.getElementById('fab');
             if (document.getElementById('app-content').scrollTop > 300) {
-                fab.style.display = 'flex';
+                fab.classList.add('visible');
             } else {
-                fab.style.display = 'none';
+                fab.classList.remove('visible');
             }
         }
         
+        // Show snackbar notification
+        function showSnackbar(message) {
+            const snackbar = document.getElementById('snackbar');
+            snackbar.textContent = message;
+            snackbar.classList.add('show');
+            
+            setTimeout(() => {
+                snackbar.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Setup ripple effects for buttons
+        function setupRippleEffects() {
+            const buttons = document.querySelectorAll('.ripple');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Remove any existing ripple effects
+                    const existingRipples = this.querySelectorAll('.ripple-effect');
+                    existingRipples.forEach(ripple => ripple.remove());
+                    
+                    // Create new ripple
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple-effect';
+                    
+                    // Position the ripple
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                    ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                    
+                    this.appendChild(ripple);
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+        
         // Initialize the app
-        loadData();
-        updateDisplay();
-        
-        // Handle keyboard for edit modal
-        document.getElementById('edit-subject-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                saveSubjectName();
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            updateDisplay();
+            setupRippleEffects();
+            
+            // Handle keyboard for edit modal
+            document.getElementById('edit-subject-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    saveSubjectName();
+                }
+            });
+            
+            // Handle keyboard for add subject modal
+            document.getElementById('new-subject-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addNewSubject();
+                }
+            });
+            
+            // Add scroll event listener
+            document.getElementById('app-content').addEventListener('scroll', handleScroll);
+            
+            // Show FAB after initial load
+            setTimeout(() => {
+                const fab = document.getElementById('fab');
+                fab.classList.add('visible');
+            }, 1000);
         });
-        
-        // Handle keyboard for add subject modal
-        document.getElementById('new-subject-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                addNewSubject();
-            }
-        });
-        
-        // Add scroll event listener
-        document.getElementById('app-content').addEventListener('scroll', handleScroll);
     </script>
 </body>
 </html>
